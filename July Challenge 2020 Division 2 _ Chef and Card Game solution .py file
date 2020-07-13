@@ -1,0 +1,39 @@
+# cook your dish here
+test=int(input())
+for x in range(test):
+    n=int(input())
+    lst=[]
+    winc=int(0)
+    winm=int(0)
+    total=int(0)
+    for y in range(n):
+        str1=input()
+        lst=str1.split(" ")
+        for z in range(0,2,1): 
+            lst[z]=int(lst[z])
+            total=0
+            while(lst[z]!=0):
+                temp=lst[z]%10
+                temp=int(temp)
+                total=total+temp
+                lst[z]=int(lst[z]/10)
+            lst[z]=total
+            
+        if(int(lst[0])>int(lst[1])):
+            winc=winc+1
+            
+        elif(int(lst[0])<int(lst[1])):
+            winm=winm+1
+            
+        else:
+            winc=winc+1
+            winm=winm+1
+    
+    if(winc>winm):
+        print("0",winc)
+    elif(winc<winm):
+        print("1",winm)
+    else:
+        print("2",winc)
+        
+       
