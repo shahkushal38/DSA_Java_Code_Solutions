@@ -1,0 +1,40 @@
+Date - 28/02/2024
+
+Question Link - https://www.geeksforgeeks.org/problems/check-if-a-number-is-divisible-by-83957/1
+
+Question - 
+
+Given a string representation of a decimal number s, check whether it is divisible by 8.
+
+Example:
+
+Input:
+s = "54141111648421214584416464555"
+
+Output:
+-1
+Explanation:
+Given Number is not divisible by 8, 
+so the driver code prints -1 as the output.
+
+
+Code solution 
+
+class Solution{
+    int DivisibleByEight(String s){
+        //code here
+        int n = s.length();
+        if(Integer.parseInt(s.substring(n-1, n)) % 2 !=0){
+            return -1;
+        }
+        if(n>3){
+            s = s.substring(n-3,n);
+        }
+        
+        long val = Long.parseLong(s);
+        if(val% 8 ==0){
+            return 1;
+        }
+        return -1;
+    }
+}
