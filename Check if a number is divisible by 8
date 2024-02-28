@@ -38,3 +38,7 @@ class Solution{
         return -1;
     }
 }
+
+
+My Explanation - 
+To check if A huge number is divisible by 8 check if its last 3 digits are also divisible by 8.
