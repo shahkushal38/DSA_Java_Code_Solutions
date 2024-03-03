@@ -1,0 +1,49 @@
+Date  03/03/2024
+
+Largest Number formed from an Array
+
+Description - 
+
+Given an array of strings arr[] of length n representing non-negative integers, arrange them in a manner, such that, after concatanating them in order, it results in the largest possible number. Since the result may be very large, return it as a string.
+
+Input: 
+n = 5
+arr[] =  {"3", "30", "34", "5", "9"}
+Output: "9534330"
+Explanation: 
+Given numbers are  {"3", "30", "34", "5", "9"}, 
+the arrangement "9534330" gives the largest value.
+
+
+Code Solution 
+
+class Solution {
+    String printLargest(int n, String[] arr) {
+        // code here
+        Arrays.sort(arr, new Comparator<String>(){
+            public int compare(String a, String b){
+                return (b+a).compareTo(a+b);
+            }
+        });
+        
+        StringBuilder result = new StringBuilder();
+        for (String s : arr) {
+            result.append(s);
+        }
+        
+        while (result.length() > 1 && result.charAt(0) == '0') {
+            result.deleteCharAt(0);
+        }
+
+        return result.toString();
+    }
+}
+
+Explanation
+
+Sorting array in descending order with string comparison 
+
+eg - "34" , "9"
+
+"934" > "349"
+
