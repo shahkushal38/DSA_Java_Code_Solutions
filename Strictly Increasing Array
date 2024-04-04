@@ -1,0 +1,76 @@
+Date  - 05/04/2024
+
+Question - https://www.geeksforgeeks.org/problems/convert-to-strictly-increasing-array3351/1
+
+Strictly Increasing Array
+
+Given an array nums of n positive integers. Find the minimum number of operations required to modify the array such that array elements are in strictly increasing order (nums[i] < nums[i+1]).
+Changing a number to greater or lesser than original number is counted as one operation.
+
+Note: Array elements can become negative after applying operation.
+
+Sample Input - 
+
+Input:
+n = 6
+nums = [1, 2, 3, 6, 5, 4]
+Output: 
+2
+Explanation: 
+By decreasing 6 by 2 and increasing 4 by 2, nums will be like [1, 2, 3, 4, 5, 6] which is stricly increasing.
+
+
+Code Solution - 
+
+class Solution
+{
+    public int min_operations(int []nums)
+    {
+        // Code here
+        int n = nums.length;
+        int dp[] = new int[n];
+        
+        Arrays.fill(dp,1);
+        
+        int maxi =1;
+        
+        for(int i =1;i<n;i++){
+            for(int j=0;j<i;j++){
+                if(nums[i]-nums[j]>= i-j){
+                    dp[i] = Math.max(dp[i],dp[j]+1);
+                    
+                    maxi = Math.max(maxi, dp[i]);
+                }
+            }
+        }
+        
+        return n-maxi;
+    }
+}
+
+
+Explanation - 
+
+10
+
+10 5 5 2 4 10 3 2 7 9
+
+Explanation-
+
+dp[10] = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+
+maxi = 1
+
+Since 4-2>4-3
+
+dp[4] = 2
+maxi = 2
+
+Since 10-5> 5-1
+dp[5] = 2
+maxi = 2
+
+continue till end ....
+
+
+So by these steps we get no. of elements to not change as they are at right position. Hence ans = n-maxi
