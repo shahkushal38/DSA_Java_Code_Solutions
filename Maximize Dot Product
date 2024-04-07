@@ -1,0 +1,53 @@
+Date - 07/04/2024
+Question - 
+
+Given two arrays a and b of positive integers of size n and m where n >= m, the task is to maximize the dot product by inserting zeros in the second array but you cannot disturb the order of elements.
+
+Dot product of array a and b of size n is a[0]*b[0] + a[1]*b[1] + ... + a[n-1]*b[n-1].
+
+Input: 
+n = 5, a[] = {2, 3, 1, 7, 8} 
+m = 3, b[] = {3, 6, 7}
+
+Output: 
+107
+
+Explanation: 
+We get maximum dot product after inserting 0 at first and third positions in second array.
+Therefore b becomes {0, 3, 0, 6, 7}. 
+Maximum dot product = 2*0 + 3*3 + 1*0 + 7*6 + 8*7 = 107.
+
+code - 
+
+class Solution
+{
+	public int maxDotProduct(int n, int m, int a[], int b[]) 
+	{ 
+		// Your code goes here
+		int[][] dp = new int[n][m];
+		
+		for(int[] dr: dp) Arrays.fill(dr, -1);
+		
+		return solve(n-1,m-1,a,b,n-m,dp);
+	} 
+	
+	public int solve(int i, int j, int[] a, int[] b, int gap, int[][] dp){
+	    if(i<0 || j<0) return 0;
+	    
+	    if(dp[i][j] != -1) return dp[i][j];
+
+  // taking product of concurrent elements
+	    int take = a[i]*b[j] + solve(i-1,j-1,a,b,gap,dp);
+	    
+	    int not_take = Integer.MIN_VALUE;
+	    
+	    if(gap>0){
+  //taking product of other elements in array A till gap = 0 
+	        not_take = solve(i-1,j,a,b,gap-1,dp);
+	        
+	    }
+
+//deciding for max sum
+	    return dp[i][j] = Math.max(take, not_take);
+	}
+}
