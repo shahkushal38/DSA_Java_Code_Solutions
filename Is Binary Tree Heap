@@ -1,0 +1,80 @@
+Is Binary Tree Heap
+
+You are given the root of a binary tree, and the task is to determine whether it satisfies the properties of a max-heap.
+
+A binary tree is considered a max-heap if it satisfies the following conditions:
+
+1. Completeness: Every level of the tree, except possibly the last, is completely filled, and all nodes are as far left as possible.
+2. Max-Heap Property: The value of each node is greater than or equal to the values of its children.
+
+Input: root = [97, 46, 37, 12, 3, 7, 31, 6, 9]
+ 
+Output: true
+Explanation: The tree is complete and satisfies the max-heap property.
+
+Since completeness
+
+so we go with bfs
+
+root 
+root-> left (isParent) 
+
+if left node and right node
+or only left node
+
+only right node -> not complete
+
+
+
+root -> right
+
+
+
+
+public boolean isHeap(Node tree) {
+        // code here
+		
+		Queue<Node> queue = new LinkedList<>();
+		queue.offer(tree);
+		boolean foundEnd = false;
+		while(!queue.isEmpty()){
+			tree = queue.poll();
+			int data = tree.data;
+			
+			if(foundEnd && (tree.left != null || tree.right != null)){
+				return false;
+			}
+			
+			if(tree.left == null && tree.right != null ){
+			    return false;    
+			
+			}			
+			if(tree.left != null ){
+				if(tree.left.data < data){
+					queue.add(tree.left);
+				}else{
+					return false;
+				}
+			}
+			
+			if(tree.right != null){
+				if(tree.right.data < data){
+					queue.add(tree.right);
+				}else{
+					return false;
+				}
+			}
+			
+			if(tree.left == null || tree.right == null){
+				foundEnd = true;
+			}
+			
+		}
+        
+		return true;
+    }
+
+
+
+
+
