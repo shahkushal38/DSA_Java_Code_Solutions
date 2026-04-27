@@ -1,0 +1,55 @@
+Triplets with Smaller Sum
+
+Given an array arr[] of distinct integers and a value sum, find the count of triplets (i, j, k), having (i<j<k) with the sum of (arr[i] + arr[j] + arr[k]) smaller than the given value sum.
+
+Examples :
+
+Input: sum = 2, arr[] = [-2, 0, 1, 3]
+Output:  2
+Explanation: Triplets with sum less than 2 are (-2, 0, 1) and (-2, 0, 3). 
+
+Input: sum = 12, arr[] = [5, 1, 3, 4, 7]
+Output: 4
+Explanation: Triplets with sum less than 12 are (1, 3, 4), (5, 1, 3), (1, 3, 7) and (5, 1, 4).
+
+Code - 
+
+eg - 5 1 3 4 7
+array sort since only count needs to be given
+go with 2 pointer approach
+
+Fenwick tree approach 
+
+so I fixed j and sum = 12
+
+   5 1 3   atmost 11
+   5 1 4
+   5 1 7 
+   
+	1 5	3 4 7 -> 1 3 4 then 1 3 7 then 5 3 4 (x) so stop
+	
+	1 3 5	4 7 -> 1 4 7(x) stop
+	
+int countTriplets(int sum, int arr[]) {
+        // code here
+		int n   = arr.length;
+		Arrays.sort(arr);
+        int count = 0;
+        
+        for(int i = 0; i<n-2; i++){
+            int j = i + 1;
+            int k = n-1;
+            
+            while(j < k){
+                int x= arr[i] + arr[j] + arr[k];
+                
+                if(sum > x){
+                   count+=(k-j);
+                   j++;
+                }else{
+                    k--;
+                }
+            }
+        }
+        return count;
+    }
