@@ -1,0 +1,185 @@
+Word Boggle
+Given a dictionary of N distinct words and an R x C board where each cell contains one character, find all possible words from the dictionary that can be formed by a sequence of adjacent characters on the board.
+
+
+We can move to any of the 8 adjacent cells (horizontally, vertically, or diagonally). A cell may be used only once while forming a single word.
+
+Examples :
+
+Input: N = 1, dictionary = ["CAT"], R = 3, C = 3, 
+board[][] = [[C, A, P], [A, N, D], [T, I, E]]
+Output: CAT
+
+Input: N = 4, dictionary = ["GEEKS","FOR","QUIZ","GO"], R = 3, C = 3, 
+board[][] = [[G, I, Z], [U, E, K], [Q, S, E]]
+Output: GEEKS QUIZ
+
+
+Steps
+
+Find the letter
+BFS for each and restore visited array
+
+// User function Template for Java
+
+class Solution {
+    public ArrayList<int[]> startingCell(char st, char board[][], int rows, int cols){
+    	ArrayList<int[]> start = new ArrayList<>();
+    // 	System.out.println(st);
+    	for(int i=0;i<rows;i++){
+    		for(int j=0;j<cols;j++){
+    			if(board[i][j] == st){
+    			 //   System.out.println(i+" "+j);
+    				start.add(new int[]{i,j});
+    			}
+    		}
+    	}
+    	
+    	return start;
+    }
+    public void reset(boolean visited[][], int rows, int cols){
+    	for(int i=0;i<rows;i++){
+    		for(int j=0;j<cols;j++){
+    			visited[i][j] = false;
+    		}
+    	}
+    }
+	
+	public int dr[] = {0,0,1,-1, 1, -1,1,-1};
+	public int dc[] = {1,-1,0,0, 1, -1, -1,1};
+// 	public boolean findWord(char board[][], String word, boolean[][] visited, int rows, int cols, int i, int j, String str){
+// 		if(str.equals(word)){
+// 			return true;
+// 		}
+		
+		
+// 		Stack<int[]> stack = new Stack<>();
+// 		Stack<String> strStack = new Stack<>();
+		
+// 		stack.push(new int[]{i,j});
+// 		strStack.push(str+board[i][j]);
+// 		while(!stack.isEmpty()){
+// 			int[] cell = stack.pop();
+// 			str = strStack.pop();
+// 			int r = cell[0];
+//             int c = cell[1];
+// // 			System.out.println(str+" "+ cell[0]+" "+cell[1]);
+// 			if (r < 0 || c < 0 || r >= rows || c >= cols || visited[r][c]) {
+//                 continue;
+//             }
+            
+//             if(!word.contains(str)){
+//                 continue;
+//             }
+
+			
+// 			// System.out.println(str+" "+ cell[0]+" "+cell[1]);
+// 			visited[r][c] = true;
+			
+// 			if(str.equals(word)){
+// 			    return true;
+// 			}
+			
+// 			for(int k=0;k<8;k++){
+// 				int nr = r+dr[k];
+// 				int nc = c + dc[k];
+// 				if (nr < 0 || nc < 0 || nr >= rows || nc >= cols) {
+//                     continue;
+//                 }
+//                 // visited[nr][nc] = true;
+// 				stack.push(new int[]{nr,nc});
+// 				strStack.push(str+board[nr][nc]);
+// 			}
+// // 			System.out.println(strStack);
+			
+// 			visited[r][c] = false;
+// 		}
+		
+// 		return false;
+		
+// 	}
+	
+	public boolean findWord(char board[][], String word, boolean[][] visited, int rows, int cols, int r, int c, String str){
+		if(str.equals(word)){
+			return true;
+		}
+		
+		
+		
+// 		System.out.println(str+" "+ r+" "+c);
+		if (r < 0 || c < 0 || r >= rows || c >= cols || visited[r][c]) {
+			return false ;
+		}
+		
+		if(!word.contains(str)){
+			return false;
+		}
+
+		
+		// System.out.println(str+" "+ cell[0]+" "+cell[1]);
+		visited[r][c] = true;
+		
+			
+		for(int k=0;k<8;k++){
+			int nr = r+dr[k];
+			int nc = c + dc[k];
+			if (nr < 0 || nc < 0 || nr >= rows || nc >= cols || visited[nr][nc]) {
+			 //   System.out.println(r+" "+c+"-> "+ nr+" "+nc);
+				continue;
+			}
+			// visited[nr][nc] = true;
+			boolean a = findWord(board, word,visited, rows, cols,nr, nc,str+board[nr][nc]); 
+			
+			if(a){
+			    return true;
+			}
+		}
+			
+			visited[r][c] = false;
+		
+		return false;
+		
+	}
+
+    public boolean possibleWord(char board[][], String word, boolean[][] visited, int rows, int cols){
+    	ArrayList<int[]> start = startingCell(word.charAt(0), board, rows, cols);
+    // 	System.out.println(start.size());
+    	for(int i=0;i<start.size();i++){
+    	   // System.out.println("For - "+ start.get(i)[0]+ " "+ start.get(i)[1]);
+    		reset(visited, rows, cols);
+			boolean a = findWord(board, word, visited, rows, cols, start.get(i)[0], start.get(i)[1], ""+board[start.get(i)[0]][start.get(i)[1]]);
+    	
+    	    if(a){
+    	        return true;
+    	    }
+    	}
+    	
+    	return false;
+    }
+    public String[] wordBoggle(char board[][], String[] dictionary) {
+        ArrayList<String> arr = new ArrayList<>();
+		int n = dictionary.length;
+		int rows = board.length; 
+		int cols = board[0].length;
+		boolean[][] visited = new boolean[rows][cols];
+		
+		
+		for(String str : dictionary){
+			reset(visited, rows, cols);
+			if(possibleWord(board, str, visited, rows, cols)){
+				arr.add(str);
+				// System.out.println(arr+" "+ str);
+			}
+		}
+		String[] ans = new String[arr.size()];
+		
+		for(int i=0;i<arr.size();i++){
+			ans[i] = arr.get(i);
+		}
+		
+        return ans;
+        
+        
+        
+    }
+}
