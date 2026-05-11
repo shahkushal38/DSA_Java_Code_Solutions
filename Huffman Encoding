@@ -1,0 +1,109 @@
+Huffman Encoding
+
+Given a string s of distinct characters and their corresponding frequency f[ ] i.e. character s[i] has f[i] frequency. You need to build the Huffman tree and return all the huffman codes in preorder traversal of the tree.
+
+Note: While merging, if two nodes have the same value (frequency), then the node whose subtree contains the character that appears earlier in the string s will be taken on the left of the Binary Tree and the other one to the right. Otherwise, the node with smaller value will be taken on the left of the subtree and the other one to the right.
+
+Examples:
+
+Input: s = "abcdef", f[] = {5, 9, 12, 13, 16, 45}
+Output: [0, 100, 101, 1100, 1101, 111]
+Explanation:
+
+HuffmanCodes will be:
+f : 0
+c : 100
+d : 101
+a : 1100
+b : 1101
+e : 111
+
+prioirty queue with minHeap of Node implementation
+
+Each minHeap is a node having left and right node i.e. leaves for chars
+
+minHeap added till we have the maximum number
+
+then on the max number create a preorder tree
+
+class Node 
+{
+	int frequency;
+	char character;
+	int firstIdx;
+	
+	Node left, right;
+	
+	public Node(char character, int  frequency, int firstIdx){
+		this.character = character;
+		this.frequency = frequency;
+		this.firstIdx = firstIdx;
+		this.left = this.right = null;
+	}
+}
+
+class Solution {
+	ArrayList<string> ans = new ArrayList<>();
+	
+	public void findPreOrder(node root, StringBuilder sb){
+		if(root == null){
+			return;
+		}
+		
+		if(root.left == null && root.right==null){
+			ans.add(sb.toString());
+			return;
+		}
+		
+		sb.append("0");
+		preorder(root.left, sb);
+		sb.deleteChar(sb.length()-1);
+		
+		sb.append("1");
+		preorder(root.right, sb);
+		sb.deleteChar(sb.length()-1);
+		
+		
+	}
+    public ArrayList<String> huffmanCodes(String s, int f[]) {
+        // Code here
+        int n = s.length();
+		
+		if(n==1){
+			return new ArrayList<String>(List.of("0"));
+		}
+		
+		//creating a maxheap
+		PriorityQueue<Node> pq = new PriorityQueue<>((a,b) ->{
+			if(a.frequency == b.frequency){
+				return a.firstIdx - b.firstIdx;
+			}
+			
+			return a.frequency - b.frequency;
+		});		
+		
+		for(int i=0;i<n;i++){
+			pq.offer(new Node(s.charAt(i), f[i], i);
+		}
+		
+		while(pq.size()>1){
+			Node leftNode = pq.poll();
+			Node rightNode = pq.poll();
+			
+			Node newNode = Node('$', leftNode.frequency+ rightNode.frequency, Math.min(leftNode.firstIdx, rightNode.firstIdx);
+			
+			newNode.left = leftNode;
+			newNode.right = rightNode;
+			
+			pq.offer(newNode);
+		}
+		
+		Node root = pq.poll();
+		
+		StringBuilder sb = new StringBuilder();
+		
+		findPreOrder(root, sb);
+		
+		return ans;
+    }
+}
