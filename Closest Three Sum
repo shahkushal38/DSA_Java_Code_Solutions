@@ -1,0 +1,66 @@
+Closest Three Sum
+
+Given an array, arr[] of integers, and another number target, find three integers in the array such that their sum is closest to the target. Return the sum of the three integers.
+
+Note: If there are multiple solutions, return the maximum one.
+
+Examples :
+
+Input: arr[] = [-7, 9, 8, 3, 1, 1], target = 2
+Output: 2
+Explanation: There is only one triplet present in the array where elements are -7,8,1 whose sum is 2.
+
+
+Input: arr[] = [5, 2, 7, 5], target = 13
+Output: 14
+Explanation: There is one triplet with sum 12 and other with sum 14 in the array. Triplet elements are 5, 2, 5 and 2, 7, 5 respectively. Since abs(13-12) ==abs(13-14) maximum triplet sum will be preferred i.e 14.
+
+Constraints:
+3 ≤ arr.size() ≤ 103
+-105 ≤ arr[i] ≤ 105
+1 ≤ target ≤ 105
+
+Approach - 
+Sort array and assign minDiff as MAX_VALUE and ans as MIN_VALUE
+then iterate for i from 0 to n-2
+then do j = i+1 and k = n-1
+use binary search algo
+
+arr = 2 5 5 7
+
+
+
+class Solution {
+    static int closest3Sum(int[] arr, int target) {
+        // code here
+        int n = arr.length ;
+		Arrays.sort(arr);
+		int ans = 0;
+		int minDiff = Integer.MAX_VALUE;
+		
+		for(int i=0;i<n-2;i++){
+			int j = i+1, k = n-2;
+			
+			while(j<k){
+				int sum = arr[i]+arr[j]+arr[k];
+				
+				if(Math.abs(sum-target)<Math.abs(ans-target)){
+					ans = sum;
+				}
+				
+				if(Math.abs(sum-target)==Math.abs(ans-target)){
+					ans = Math.max(ans, sum);
+				}
+				
+				if(sum<target){
+					j++;
+				}else{
+					k--;
+				}
+			}
+		}
+		
+		return ans;
+		
+    }
+}
